@@ -1,10 +1,10 @@
 import { createServer } from 'node:http';
 
-createServer(function (resquest, response) {
+createServer(function (request, response) {
     if (request.url !== '/api/health') {
         response.writeHead(404, { 'content-type': 'application/json' });
         response.end(JSON.stringify({ message: 'recurso não encontrado' }));
-        return
+        return;
     }
 
 
