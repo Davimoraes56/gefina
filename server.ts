@@ -56,17 +56,30 @@ app.use(function (request, response, next) {
     next();
 });
 
-app.get('/api/invoices', function (request, response) {
-    send response,(200).json(invoices);
-})
 
 app.get('/api/health', function (request, response) {
-    send response,(200).json({status: 'ok'});
-    
+  response.status(200).json({status: 'ok'});
+  
 });
 
+app.get('/api/invoices', function (request, response) {
+    response.status(200).json(invoices);
+});
+
+app.get('/api/invoices/:id', function (request, response) {
+  const id = +request.params.id;
+
+  for (let i = 0; i < invoices.length; i++){
+    if (invoices[i].id === id){
+      response.status(200).json(invoices[i]);
+      return;
+    }
+  }
+  response.status(400).json({ error: { message: 'Fatura não encontrada'}});
+})
+
 app.use(function (request, response) {
-    send response,(404).json({message: 'Recurso não encontrado.'});
+    response.status(404).json({message: 'Recurso não encontrado.'});
 });
 
 app.listen(3000);
