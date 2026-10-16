@@ -41,14 +41,14 @@ const baseQuery =`
      WHEN invoices.due_date < CURRENT_DATE THEN 'overdue'
      ELSE 'pending'
      END AS situation,
-    invoices.issue_date,
-    invoices.due_date,
+    invoices.issue_date::text,
+    invoices.due_date::text,
     customers.id AS customer_id,
     customers.name AS customer_name,
     customers.email AS customer_email
   FROM invoices
   JOIN customers
-  ON customers.id = invoices.customer_id
+  ON customers.id = invoices.customer_id `
 
   
   function toInvoice(row: InvoiceRow): Invoice {
@@ -81,6 +81,6 @@ const baseQuery =`
  export async function findInvoiceById(id: number): Promise<Invoice | undefined> {
   const connect = await pool.query<InvoiceRow>(`${baseQuery} WHERE invoices.id = $1;`, [id]);
 
-  if (!connect.rows.[0]) return undefined;
+  if (!connect.rows[0]) return undefined;
   return toInvoice(connect.rows[0]);
 }
