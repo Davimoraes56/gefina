@@ -4,6 +4,7 @@ import path from 'node:path';
 
 import pool from './database.ts';
 
+import dashboard from './dashboard.route.ts'
 import invoices from './invoice.route.ts';
 
 const app = express();
@@ -17,8 +18,7 @@ app.use((request, _response, next) => {
 
 app.get('/api/health', async (_request, response) => {
   try {
-     const connect = await pool.query('SELECT dataname FROM pg_database WHERE oid = 5;');
-
+     const connect = await pool.query('SELECT current_database() AS datname;');
   response.status(200).json({
      status: 'Server is running.',
      database: connect.rows[0].datname
@@ -34,7 +34,7 @@ app.get('/api/health', async (_request, response) => {
 
 
 
-
+app.use('/api/dashboard', dashboard);
 app.use('/api/invoices', invoices);
 
 app.use(express.static(dist));

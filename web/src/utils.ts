@@ -25,5 +25,5 @@ export function formatDate(isoDate: string): string {
     year: 'numeric'
   });
 
-  return formatter.format(new Date(`${isoDate} T00:00:00`));
+  return formatter.format(new Date(`${isoDate}T00:00:00`));
 };
