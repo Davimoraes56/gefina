@@ -32,7 +32,7 @@
 
 body {
     background-color: var(--color-background);
-    color: var(--color-background);
+    color: var(--color-text);
     font-size: var(--text-base);
     font-family: var(--font-sans);
 }
@@ -59,4 +59,16 @@ a {
 
 .numeric {
     font-variant-numeric: tabular-nums;
+}
+
+.situation-paid {
+    color: var(--color-paid);
+}
+
+.situation-paid {
+    color: var(--color-pending);
+}
+
+.situation-paid {
+    color: var(--color-overdue);
 }
