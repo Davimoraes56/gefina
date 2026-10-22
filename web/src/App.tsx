@@ -11,8 +11,9 @@ import InvoicePage from "./InvoicePage.tsx";
 export default function App() {
     return <div> 
     <BrowserRouter>
-        <aside> 
-            <nav>
+        <aside className='sidebar'> 
+            <header className='brand'>Gefina</header>
+            <nav className='menu'>
                 <ul>
                     <li><Link to='/'>Painel Inicial</Link></li>
                     <li> <Link to='/faturas'>Faturas</Link></li>
@@ -20,7 +21,7 @@ export default function App() {
             </nav>
         </aside>
 
-        <main>
+        <main className='content'>
             <Routes>
                 <Route path='/' element={<DashboardPage />} />
                 <Route path='/faturas' element={<InvoicePage />} />
