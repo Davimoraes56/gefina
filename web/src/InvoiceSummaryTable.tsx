@@ -10,7 +10,7 @@ interface InvoiceSummaryTableProps {
 }
 
 export default function InvoiceSummaryTable(props: InvoiceSummaryTableProps) {
-    return <div>
+    return <div className='panel'>
         <h2>{props.title}</h2>
 
         <table>
@@ -18,7 +18,7 @@ export default function InvoiceSummaryTable(props: InvoiceSummaryTableProps) {
                 <tr>
                     <th>Cliente</th>
                     <th>Valor</th>
-                    <th>{props.dateLabel}</th>
+                    <th className='numeric-date'>{props.dateLabel}</th>
                 </tr>
             </thead>
             <tbody>

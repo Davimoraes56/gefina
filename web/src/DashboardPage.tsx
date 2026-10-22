@@ -51,14 +51,15 @@ useEffect(() => {
  return <>
  <h1>Painel Inicial</h1>
 
- <div>
+ <div className='summary-cards'>
     <SummaryCard label='Total recebido:' value={ formatCurrency(dasboard?.totals.paid)} />
     <SummaryCard label='Total pendente:' value={ formatCurrency(dasboard?.totals.pending)} />
     <SummaryCard label='Faturas:' value={String(dasboard.totals.invoiceCount)} />
     <SummaryCard label='Clientes:' value={String(dasboard.totals.customerCount)} />
  </div>
 
- <InvoiceSummaryTable
+ <div className='summary-tables'>
+  <InvoiceSummaryTable
  title='Faturas recentes'
  dateLabel='Emissão'
  invoices={dasboard.recentInvoices}
@@ -70,7 +71,7 @@ useEffect(() => {
  invoices={dasboard.overdueInvoices}
  date={(invoice) => invoice.dueDate}
  />
-
+ </div>
 
 </>
 
