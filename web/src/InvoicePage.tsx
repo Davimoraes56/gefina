@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 import type { Invoice } from './InvoiceTypes.ts';
 import InvoiceTable from './invoiceTable.tsx';
+import InvoiceForm from './InvoiceForm.tsx';
 
 
 
@@ -46,6 +47,7 @@ useEffect(() => {
  return <>
   <h1>Faturas</h1>
   <InvoiceTable invoices={invoices}/>
+  <InvoiceForm/>
  </>
 
 
