@@ -5,7 +5,7 @@
   --color-border: #2a2f3a;
   --color-text: #e8eaed;
   --color-text-muted: #9aa1ae;
-  --color-primary: #6e56
+  --color-primary: #6e56cf;
   --color-paid: #3fb950;
   --color-pending: #d29922;
   --color-overdue: #f85149;
@@ -174,10 +174,10 @@ th, td {
     color: var(--color-paid);
 }
 
-.situation-paid {
+.situation-pending {
     color: var(--color-pending);
 }
 
-.situation-paid {
+.situation-overdue{
     color: var(--color-overdue);
 }

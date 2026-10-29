@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,type SubmitEvent } from 'react';
 
 import type { Invoice, InvoiceStatus, InvoiceInput } from './InvoiceTypes.ts';
 import type { CustomerOption } from './customerType.ts';
@@ -32,32 +32,43 @@ export default function InvoiceForm(props: InvoiceFormProps) {
         })
     }
 
-    return <form>
-      <h2></h2>
+    return <form onSubmit={(handleSubmit)}>
+      <h2>{!props.invoice ? 'Criar fatura' : 'Editar fatura'}</h2>
 
       <div>
         <label htmlFor='customer'>Cliente</label>
-        <select id='customer'>
-            <option 
-            selected 
-            disabled
-            >
-                Selecione um cliente
-            </option>
+        <select 
+        id='customer'
+        value={customerId}
+        onChange={(event) => setCustomerId(event.target.value as InvoiceStatus)}
+        >
+            <option>Selecione um cliente</option>
+            {props.customers.map((customer) => {
+              return <option key={customer.id} value={customer.id}>
+                {customer.name} - {customer.email}
+              </option>;
+            })}
         </select>
       </div>
       <div>
         <label htmlFor='amount'>Valor</label>
         <input 
+        id='amount'
         type="number"
+        value={amount}
         step="0.01"
         min="0.01"
+        onChange={(event) => setAmount(event.target.value)}
         required
         />
       </div>
       <div>
         <label htmlFor="status">Situação</label>
-        <select id='status'>
+        <select 
+        id='status'
+        value={status}
+        onChange={(event) => setStatus(event.target.value as InvoiceStatus)}
+        >
             <option value="panding">Pendente</option>
             <option value="paid">Paga</option>
         </select>
@@ -66,21 +77,43 @@ export default function InvoiceForm(props: InvoiceFormProps) {
 
          <div>
             <label htmlFor="issueDate">Emissão</label>
-            <input id='issuedate' type="date" required  />
+            <input 
+            id='issuedate' 
+            type="date"
+            value={issueDate}
+            onChange={(event) => setIssueDate(event.target.value)}
+            required  
+             />
         </div>
 
             
-        <label htmlFor="issueDate">Vencimento</label>
+        <label htmlFor="dueDate">Vencimento</label>
         <input 
-        id="issueDate"
+        id="dueDate"
         type="date" 
+        value={dueDate}
+        onChange={(event) => setDueDate(event.target.value)}
         required
         />
       </div>
+
+      {!props.error ? null : <p>{props.error}</p>}
+      
       <div>
-        <button type='button'>Excluir</button>
-        <button type='button'>Cancelar</button>
-        <button type='submit'>Salvar</button>
+        {!props.invoice ? null : <button 
+        type='button'
+        disabled={props.busy}
+        onClick={props.onDelete}
+        >Excluir</button>}
+        <button 
+        type='button'
+        disabled={props.busy}
+        onClick={props.onCancel}
+        >Cancelar</button>
+        <button 
+        type='submit'
+        disabled={props.busy}
+        >{props.busy ? 'Salvando...' : 'Salvar'}</button>
       </div>
     </form>;
 }

@@ -1,34 +1,32 @@
 import { useState, useEffect } from 'react';
 
-import type { Invoice } from './InvoiceTypes.ts';
+import type { Invoice, InvoiceInput } from './InvoiceTypes.ts';
 import InvoiceTable from './invoiceTable.tsx';
 import InvoiceForm from './InvoiceForm.tsx';
+
+import { getAllInvoices, createInvoice} from './invoiceApi.ts'
+import type { CustomerOption } from './customerType.ts';
 
 
 
 export default function InvoicePage() {
 
  const [invoices, setInvoices ] = useState<Invoice[]>([]);
- const [error, setError] = useState<string | null>(null)
+ const [customersOptions, setcustomersOptions] = useState<CustomerOption[]>([]);
+ const [error, setError] = useState<string | null>(null);
+ const [busy, setBusy] = useState(false);
+ const [formError, setFormError] = useState<string | null>(null);
  const[loading, setloading] = useState(true);
 
  
 useEffect(() => {
   async function getInvoices() {
     try {
-      const response = await fetch('/api/invoices');
-
-     if( !response.ok){
-      setError('Não foi possível carregar faturas.');
-      setloading(false);
-      return;
-     }
-     const datas = await response.json();
-     setInvoices(datas);
-
-    } catch{
-      setError('Não foi possível carregar faturas.');
-
+      const datas = await getAllInvoices();
+      setInvoices(datas);
+    }
+     catch (error){
+        if (error instanceof Error) setError(error.message);
     }
     
     setloading(false)
@@ -39,6 +37,49 @@ useEffect(() => {
   getInvoices();
     
   },[]);
+
+  useEffect(() => {
+    async function getCustomersOptions() {
+        try {
+          const response = await fetch('/api/customers/options');
+
+          if (!response.ok) throw new Error('Falha ao buscar opções de clientes.');
+
+          const datas = await response.json();
+
+          setcustomersOptions(datas);
+      } catch (error) {
+          if (error instanceof Error) setError(error.message);
+      }
+    }
+    getCustomersOptions();
+  }, []);
+
+  async function refresh() {
+    async function getInvoices() {
+    try {
+      const datas = await getAllInvoices();
+      setInvoices(datas);
+    }
+     catch (error){
+        if (error instanceof Error) throw error;
+    }
+  }};
+
+  async function submit(datas: InvoiceInput) {
+    setBusy(true);
+    setFormError(null);
+
+    try {
+      await createInvoice(datas);
+      await refresh();
+    } catch (error) {
+      if (error instanceof Error) setFormError(error.message);
+    }
+
+    setBusy(false)
+  }
+
   if (loading) return <p>Carregando faturas...</p>
 
 
@@ -46,10 +87,19 @@ useEffect(() => {
 
  return <>
   <h1>Faturas</h1>
-  <InvoiceTable invoices={invoices}/>
-  <InvoiceForm/>
- </>
 
-
+  <div className='panel'>
+    <InvoiceTable invoices={invoices} />
+  </div>
+  <InvoiceForm 
+  invoice={null}
+  customers={customersOptions}
+  error={formError}
+  onDelete={() => null}
+  onCancel={() => null}
+  onSubmit={submit}
+  busy={busy}
+  />
+</>
 
 }

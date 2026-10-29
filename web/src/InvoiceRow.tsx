@@ -11,8 +11,9 @@ interface InvoiceRowProps {
 }
 
 export default function InvoiceRow(props: InvoiceRowProps) {
+    const invoice = props.invoice
     return <tr>
-        <td>{props.invoice.customer.name}</td>
+        <td>{invoice.customer.name}</td>
         <td className='numeric'>{formatCurrency(props.invoice.amount)}</td>
         <td className='numeric numeric-date'>{formatDate(props.invoice.issueDate)}</td>
         <td className='numeric numeric-date'>{formatDate(props.invoice.dueDate)}</td>
