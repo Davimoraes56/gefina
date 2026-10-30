@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import type { Invoice, InvoiceInput } from './InvoiceTypes.ts';
 import InvoiceTable from './invoiceTable.tsx';
@@ -17,6 +17,22 @@ export default function InvoicePage() {
  const [busy, setBusy] = useState(false);
  const [formError, setFormError] = useState<string | null>(null);
  const[loading, setloading] = useState(true);
+ const [dialogContent, setDialogContent] = useState(false);
+
+
+ const dialogRef =useRef<HTMLDialogElement>(null);
+
+ function openModal() {
+       setFormError(null);
+       setDialogContent(true);
+  dialogRef.current?.showModal();
+ }
+
+function closeModal() {
+  dialogRef.current?.close();
+ }
+ 
+ dialogRef.current
 
  
 useEffect(() => {
@@ -72,6 +88,7 @@ useEffect(() => {
 
     try {
       await createInvoice(datas);
+      closeModal();
       await refresh();
     } catch (error) {
       if (error instanceof Error) setFormError(error.message);
@@ -86,20 +103,32 @@ useEffect(() => {
   if (error) return <p>{error}</p>;
 
  return <>
+ <header className='page-header'>
   <h1>Faturas</h1>
+  <button className='button-primary' onClick={openModal}>Nova fatura</button>
+ </header>
+  
 
   <div className='panel'>
     <InvoiceTable invoices={invoices} />
   </div>
-  <InvoiceForm 
+
+  <dialog 
+  className='invoice-modal'
+   ref={dialogRef}
+   onClose={() => setDialogContent(false)}
+   >
+    {dialogContent && <InvoiceForm 
   invoice={null}
   customers={customersOptions}
   error={formError}
   onDelete={() => null}
-  onCancel={() => null}
+  onCancel={closeModal}
   onSubmit={submit}
   busy={busy}
-  />
+  />}
+  </dialog>
+  
 </>
 
 }
