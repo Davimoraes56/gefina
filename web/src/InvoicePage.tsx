@@ -4,7 +4,7 @@ import type { Invoice, InvoiceInput } from './InvoiceTypes.ts';
 import InvoiceTable from './invoiceTable.tsx';
 import InvoiceForm from './InvoiceForm.tsx';
 
-import { getAllInvoices, createInvoice} from './invoiceApi.ts'
+import { getAllInvoices, createInvoice, updateInvoice} from './invoiceApi.ts'
 import type { CustomerOption } from './customerType.ts';
 
 
@@ -18,11 +18,13 @@ export default function InvoicePage() {
  const [formError, setFormError] = useState<string | null>(null);
  const[loading, setloading] = useState(true);
  const [dialogContent, setDialogContent] = useState(false);
+ const [target, setTarget] = useState<Invoice | null>(null);
 
 
  const dialogRef =useRef<HTMLDialogElement>(null);
 
- function openModal() {
+ function openModal(invoice: Invoice | null) {
+       setTarget(invoice);
        setFormError(null);
        setDialogContent(true);
   dialogRef.current?.showModal();
@@ -87,7 +89,12 @@ useEffect(() => {
     setFormError(null);
 
     try {
-      await createInvoice(datas);
+      if (!target) {
+           await createInvoice(datas);
+      } else {
+        await updateInvoice(target.id, datas);
+      }
+     
       closeModal();
       await refresh();
     } catch (error) {
@@ -105,12 +112,18 @@ useEffect(() => {
  return <>
  <header className='page-header'>
   <h1>Faturas</h1>
-  <button className='button-primary' onClick={openModal}>Nova fatura</button>
+  <button 
+  className='button-primary'
+  type='button'
+  onClick={() => openModal(null)}
+  >Nova fatura</button>
  </header>
   
 
   <div className='panel'>
-    <InvoiceTable invoices={invoices} />
+    <InvoiceTable 
+    invoices={invoices}
+    edit={openModal} />
   </div>
 
   <dialog 
@@ -119,7 +132,7 @@ useEffect(() => {
    onClose={() => setDialogContent(false)}
    >
     {dialogContent && <InvoiceForm 
-  invoice={null}
+  invoice={target}
   customers={customersOptions}
   error={formError}
   onDelete={() => null}
