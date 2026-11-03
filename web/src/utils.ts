@@ -30,7 +30,7 @@ export function formatDate(isoDate: string): string {
   const formatter = new Intl.DateTimeFormat('pt-BR', {
     day: '2-digit',
     month: '2-digit',
-    year: 'numeric'
+    year: 'numeric',
   });
 
   return formatter.format(new Date(`${isoDate}T00:00:00`));
