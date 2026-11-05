@@ -50,4 +50,4 @@ export default async function findDashboard(): Promise<Dashboard>{
        recentInvoices,
        overdueInvoices
     }
-}
+};
