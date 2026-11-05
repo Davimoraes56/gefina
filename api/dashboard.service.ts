@@ -1,13 +1,13 @@
 import pool from "./database.ts";   
+import type { InvoiceStatus } from "./invoice.schema.ts";
 import {
     type Invoice,
-    type InvoiceStatus,
     findRecentInvoices,
     findOverdueInvoices
 } from './invoice.services.ts'
 
 interface DashboardTotals {
-    paid: number,
+    paid: number;
     pending: number;
     invoiceCount: number;
     customerCount: number;
@@ -34,8 +34,8 @@ async function count(resource:Resource): Promise<number>{
 }
 
 export default async function findDashboard(): Promise<Dashboard>{
-    const paid = await sumAmountByStatus('paid');
-    const pending =  await sumAmountByStatus('pending')
+    const paid = await sumAmountByStatus('paid');   
+    const pending =  await sumAmountByStatus('pending');
     const invoiceCount =  await count('invoices');
     const customerCount =  await count('customers');
     const recentInvoices = await findRecentInvoices();
@@ -50,4 +50,4 @@ export default async function findDashboard(): Promise<Dashboard>{
        recentInvoices,
        overdueInvoices
     }
-}
+};
