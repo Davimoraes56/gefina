@@ -106,5 +106,80 @@ describe(
                expect(Array.isArray(response.body)).toBe(true);
             }
         );
+
+        it(
+            'cria fatura e devolve o registro crtiado',
+            async () => {
+                const response = await request
+                    .post('/api/invoices')
+                    .send({
+                        customerId: customer.id,
+                        amount: 55555,
+                        status: 'pending',
+                        issueDate: '2026-10-01',
+                        dueDate: '2026-10-31'
+                    });
+
+                    expect(response.status).toBe(201);
+                    expect(response.body.situation).toBe('overdue');
+            }
+        );
+
+        it(
+            'altera fatura e devolve registro alterado',
+            async () => {
+                const response = await request
+                    .put(`/api/invoices/${invoice.id}`)
+                    .send({
+                        customerId: customer.id,
+                        amount: 55555,
+                        status: 'paid',
+                        issueDate: '2026-10-01',
+                        dueDate: '2026-10-31'
+                    });
+
+                    expect(response.status).toBe(200);
+                    expect(response.body.situation).toBe('paid');
+            }
+
+        );
+
+        it(
+            'remove fatura',
+            async () =>  {
+                const removal = await request.delete(`/api/invoices/${invoice.id}`);
+                const search = await request.get(`/api/invoices/${invoice.id}`);
+
+                expect(removal.status).toBe(204);
+                expect(search.status).toBe(404);
+            }
+        );
+
+        it(
+            'recusa busca de fatura com identificador inválido',
+            async () => {
+                const response = await request.get('/api/invoices/abc');
+
+                expect(response.status).toBe(400);
+            }
+        );
+
+        it(
+            'recusa criar fatura com valor zerado',
+            async () => {
+                const response = await request
+                    .post('/api/invoices')
+                    .send({
+                        customerId: customer.id,
+                        amount: 0,
+                        status: 'pending',
+                        issueDate: '2026-10-01',
+                        dueDate: '2026-10-31'
+                    });
+
+                    expect(response.status).toBe(400);
+                    expect(response.body.error.fields.amount).toBeDefined;
+            }
+        );
     }
 );
