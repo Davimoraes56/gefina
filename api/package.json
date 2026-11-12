@@ -5,7 +5,7 @@
     "dev": "node --watch --env-file=.env ./server.ts",
     "check": "tsc --noEmit",
     "test": "vitest run",
-    "postinstall": "prisma geranete",
+    "postinstall": "prisma generate",
     "seed": "node --env-file=.env ./prisma/seed.ts",
     "migrate:deploy": "prisma migrate deploy"
   },
