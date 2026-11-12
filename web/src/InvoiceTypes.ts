@@ -1,5 +1,5 @@
- export type InvoiceStatus = 'pending' | 'paid';
-  export type InvoiceSituation = 'paid' | 'pending' | 'overdue';
+export type InvoiceStatus = 'pending' | 'paid';
+export type InvoiceSituation = 'paid' | 'pending' | 'overdue';
 
 interface Customer {
   id: number;
