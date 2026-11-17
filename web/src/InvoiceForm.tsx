@@ -30,7 +30,7 @@ export default function InvoiceForm(props: InvoiceFormProps) {
     !props.invoice ? undefined : String(props.invoice.customer.id),
   );
   const [amount, setAmount] = useState(
-    !props.invoice ? '' : (props.invoice.amount / 100).toFixed(2),
+    !props.invoice ? undefined : (props.invoice.amount / 100).toFixed(2),
   );
   const [status, setStatus] = useState<InvoiceStatus>(
     !props.invoice ? 'pending' : props.invoice.status,
@@ -102,7 +102,7 @@ export default function InvoiceForm(props: InvoiceFormProps) {
               setStatus(event.target.value as InvoiceStatus)
             }
           >
-            <option value="panding">Pendente</option>
+            <option value="pending">Pendente</option>
             <option value="paid">Paga</option>
           </select>
         </div>
@@ -110,7 +110,7 @@ export default function InvoiceForm(props: InvoiceFormProps) {
         <div className="field">
           <label htmlFor="issueDate">Emissão</label>
           <input
-            id="issuedate"
+            id="issueDate"
             type="date"
             value={issueDate}
             onChange={(event) => setIssueDate(event.target.value)}
