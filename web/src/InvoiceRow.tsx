@@ -25,7 +25,9 @@ export default function InvoiceRow(props: InvoiceRowProps) {
       <td className={`${base} text-center tabular-nums`}>
         {formatDate(props.invoice.dueDate)}
       </td>
-      <td className={`${base} text-center ${situationClass(props.invoice.situation)}`}>
+      <td
+        className={`${base} text-center ${situationClass(props.invoice.situation)}`}
+      >
         {situationLabel(props.invoice.situation)}
       </td>
       <td className={`${base} text-center px-0`}>

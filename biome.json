@@ -13,12 +13,12 @@
   },
   "css": {
     "parser": {
-    "tailwindDirectives": true
+      "tailwindDirectives": true
+    },
+    "formatter": {
+      "quoteStyle": "single"
+    }
   },
-  "formatter": {
-    "quoteStyle": "single"
-  }
-},
   "linter": {
     "enabled": true,
     "rules": {
