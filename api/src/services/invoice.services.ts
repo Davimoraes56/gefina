@@ -5,8 +5,8 @@ import type {
 import type {
   InvoiceInput,
   InvoiceStatus,
-} from './invoice.schema.ts';
-import prisma from './prisma.ts';
+} from '../schemas/invoice.schema.ts';
+import prisma from '../prisma.ts';
 
 type InvoiceStituation = 'paid' | 'pending' | 'overdue';
 

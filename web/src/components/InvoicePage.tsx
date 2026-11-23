@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import type { CustomerOption } from './customerType.ts';
-import InvoiceForm from './InvoiceForm.tsx';
-import type {
-  Invoice,
-  InvoiceFieldErrors,
-  InvoiceInput,
-} from './InvoiceTypes.ts';
 import {
   createInvoice,
   deleteInvoice,
   getAllInvoices,
   updateInvoice,
-} from './invoiceApi.ts';
+} from '../requests/invoiceApi.ts';
+import type { CustomerOption } from '../types/customerType.ts';
+import type {
+  Invoice,
+  InvoiceFieldErrors,
+  InvoiceInput,
+} from '../types/InvoiceTypes.ts';
+import InvoiceForm from './InvoiceForm.tsx';
 import InvoiceTable from './invoiceTable.tsx';
 
 export default function InvoicePage() {
