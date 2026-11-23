@@ -1,6 +1,6 @@
-import type { Invoice } from './InvoiceTypes.ts';
+import type { Invoice } from '../types/InvoiceTypes.ts';
 
-import { formatCurrency, formatDate } from './utils.ts';
+import { formatCurrency, formatDate } from '../utils.ts';
 
 interface InvoiceSummaryTableProps {
   title: string;
